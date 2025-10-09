@@ -2,18 +2,16 @@ name: Build JAR
 
 on:
   push:
-    branches: [ main ]   # (a) só quando há push para a branch principal
+    branches: [ main ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      # checkout do código
       - name: Checkout
         uses: actions/checkout@v4
 
-      # (b) configurar Java 21 (Temurin) + cache do Maven
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
@@ -21,14 +19,15 @@ jobs:
           java-version: '21'
           cache: maven
 
-      # (c) compilar e gerar o .jar
       - name: Build with Maven
         run: mvn -B clean package
 
-      # (d) publicar o .jar como artefacto
+      # (novo passo)
+      - name: Copiar JAR para raiz
+        run: cp target/*.jar .
+
       - name: Upload JAR artifact
         uses: actions/upload-artifact@v4
         with:
           name: app-jar
           path: target/*.jar
-          if-no-files-found: error
