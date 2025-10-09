@@ -12,6 +12,8 @@
     <properties>
         <java.version>21</java.version>
         <vaadin.version>24.9.2</vaadin.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
     <parent>
@@ -34,7 +36,6 @@
     </dependencyManagement>
 
     <dependencies>
-        <!-- Usa só o starter (o agregador com.vaadin:vaadin pode confundir a resolução) -->
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-spring-boot-starter</artifactId>
@@ -51,11 +52,16 @@
             <version>2.0.29</version>
         </dependency>
 
-
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
+        </dependency>
+
+        <!-- Email -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
 
         <dependency>
@@ -67,6 +73,15 @@
 
     <build>
         <defaultGoal>spring-boot:run</defaultGoal>
+
+        <!-- Desativar filtering para evitar erro no application.properties -->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
+
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -86,7 +101,6 @@
                 </executions>
             </plugin>
 
-            <!-- Garante -release 21 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -98,7 +112,6 @@
         </plugins>
     </build>
 
-    <!-- (Opcional) profile de produção; podes remover se não vais usar já -->
     <profiles>
         <profile>
             <id>production</id>
