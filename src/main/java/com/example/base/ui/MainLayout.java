@@ -17,13 +17,12 @@ import static com.vaadin.flow.theme.lumo.LumoUtility.*;
 @Layout
 public final class MainLayout extends AppLayout {
 
-    MainLayout() {
+    public MainLayout() {
         setPrimarySection(Section.DRAWER);
         addToDrawer(createHeader(), new Scroller(createSideNav()));
     }
 
     private Div createHeader() {
-        // TODO Replace with real application logo and name
         var appLogo = VaadinIcon.CUBES.create();
         appLogo.addClassNames(TextColor.PRIMARY, IconSize.LARGE);
 
@@ -38,7 +37,14 @@ public final class MainLayout extends AppLayout {
     private SideNav createSideNav() {
         var nav = new SideNav();
         nav.addClassNames(Margin.Horizontal.MEDIUM);
-        MenuConfiguration.getMenuEntries().forEach(entry -> nav.addItem(createSideNavItem(entry)));
+
+        // Itens registados automaticamente (se existirem @Menu noutras views)
+        MenuConfiguration.getMenuEntries()
+                .forEach(entry -> nav.addItem(createSideNavItem(entry)));
+
+        // Item manual para a rota "email"
+        nav.addItem(new SideNavItem("Email", "email", VaadinIcon.ENVELOPE.create()));
+
         return nav;
     }
 
