@@ -24,3 +24,10 @@ jobs:
       # Compila o projeto. Se quiseres correr testes, tira o -DskipTests
       - name: Build with Maven
         run: mvn -B -DskipTests package
+
+      # Publicar o ficheiro JAR gerado
+      - name: Upload JAR artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-jar
+          path: target/*.jar
