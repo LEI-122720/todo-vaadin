@@ -1,31 +1,49 @@
 package com.example.cambio;
 
-
+import org.javamoney.moneta.Money;
+import javax.money.CurrencyUnit;
+import javax.money.Monetary;
+import javax.money.MonetaryAmount;
+import javax.money.convert.CurrencyConversion;
+import javax.money.convert.ExchangeRateProvider;
+import javax.money.convert.MonetaryConversions;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @Service
 public class ExchangeService {
 
-    private final RestTemplate restTemplate = new RestTemplate();
-
     public ExchangeResult convert(String from, String to, double amount) {
-        String url = String.format(
-                "https://api.frankfurter.app/latest?amount=%s&from=%s&to=%s", amount, from, to
-        );
+        // Define currencies
+        CurrencyUnit fromCurrency = Monetary.getCurrency(from);
+        CurrencyUnit toCurrency = Monetary.getCurrency(to);
 
-        FrankfurterResponse response = restTemplate.getForObject(url, FrankfurterResponse.class);
+        // Create a monetary amount
+        MonetaryAmount monetaryAmount = Money.of(amount, fromCurrency);
 
-        if (response == null || response.getRates() == null || !response.getRates().containsKey(to)) {
-            throw new RuntimeException("Failed to retrieve exchange rate.");
-        }
+        // Use the default exchange rate provider (e.g., ECB)
+        ExchangeRateProvider provider = MonetaryConversions.getExchangeRateProvider("ECB");
 
-        double convertedAmount = response.getRates().get(to);
-        double rate = convertedAmount / amount;
-        System.out.println("Converted Amount: " + convertedAmount + " " + to);
+        // Get the conversion and apply it
+        CurrencyConversion conversion = provider.getCurrencyConversion(toCurrency);
+        MonetaryAmount convertedAmount = monetaryAmount.with(conversion);
+
+        // Round to 2 decimal places (standard for currency)
+        BigDecimal roundedValue = convertedAmount.getNumber()
+                .numberValue(BigDecimal.class)
+                .setScale(2, RoundingMode.HALF_UP);
+        double convertedValue = roundedValue.doubleValue();
+
+        // Extract rate info
+        double rate = provider.getExchangeRate(fromCurrency, toCurrency).getFactor().doubleValue();
+
+
+        System.out.println("Converted Amount: " + convertedValue + " " + to);
         System.out.println("Rate used: " + rate);
-        return new ExchangeResult(from, to, rate, convertedAmount);
 
+        // Pass the original 'amount' to the updated constructor
+        return new ExchangeResult(from, to, amount, rate, convertedValue);
     }
 }
-
