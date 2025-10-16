@@ -1,3 +1,6 @@
+## 📽️ Vídeo explicativo "Engenharia de Software, Guião 2"
+https://www.youtube.com/watch?v=A3JbHH7K0tc
+
 ## ⚙️ Integração Contínua (CI) com GitHub Actions
 
 Foi criada uma pipeline de *Continuous Integration* (CI) usando **GitHub Actions**, que automatiza o processo de build do projeto.
@@ -126,6 +129,7 @@ docker build --secret id=proKey,src=$HOME/.vaadin/proKey .
 ```
 
 ## Getting Started
+
 
 The [Getting Started](https://vaadin.com/docs/latest/getting-started) guide will quickly familiarize you with your new
 App implementation. You'll learn how to set up your development environment, understand the project 
