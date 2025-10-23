@@ -1,9 +1,0 @@
-Package Name,A,Ca,Ce,PAHD,PACHEF,PACHER,PACHL,PACHVC,PAHVL,I,PLOC,PAMI,PNCSS,D,PNOAC,PNOCC,PNOI,PNOSC,Comentário
-,1,0,0,20.1667,7083.4863,0.1229,66,40,351.2473,1,28,50.4209,21,1,0,1,0,0,
-com,1,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,"O projeto apresenta boa estrutura geral, com a maioria das classes a verde nas Fitness Functions. Contudo, algumas classes como TaskService e PDFExporter apresentam complexidade elevada (WMC > 20) e acoplamento alto (CBO > 10), sendo candidatas a refactoring. O pacote com.todoapp.service concentra a maior parte da lógica, o que indica uma possível violação do princípio de separação de responsabilidades."
-com.example,0,1,0,12.75,1269.8864,0.0439,38,28,151.014,0,14,59.5931,8,1,0,2,0,0,
-com.example.base,1,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,
-com.example.base.ui,0,0,3,54.8636,16602.4693,0.3209,200,134,1036.6535,1,83,36.7263,51,0,0,4,0,0,
-com.example.base.ui.component,0,2,0,12.1136,4411.5331,0.0897,71,35,364.1791,0,23,52.2132,16,1,0,1,0,0,
-com.example.examplefeature,0.3333,1,0,34.5505,13846.3481,0.2254,128,76,691.2808,0,62,40.6146,28,0.6667,0,2,1,0,
-com.example.examplefeature.ui,0,0,2,39.6,31952.6039,0.3356,128,79,806.8839,1,36,45.6041,28,0,0,1,0,0,
