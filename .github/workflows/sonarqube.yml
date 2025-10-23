@@ -28,7 +28,7 @@ jobs:
         run: |
           mvn -B -DskipTests clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
             -Dsonar.projectKey=LEI-122720_todo-vaadin \
-            -Dsonar.organization=lei-122720   # <= se ainda falhar, coloca aqui a org key exata que vês em SonarCloud (Administration -> Organization information)
+            -Dsonar.organization=lei-122720
 
       - name: Wait for Quality Gate
         uses: sonarsource/sonarqube-quality-gate-action@v1.1.0
