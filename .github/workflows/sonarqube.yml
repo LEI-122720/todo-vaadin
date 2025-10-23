@@ -2,7 +2,7 @@ name: SonarQube Analysis
 
 on:
   push:
-    branches: [ "main" ]   # corre só em push para main (como pedido)
+    branches: [ "main" ]
 
 jobs:
   build-and-analyze:
@@ -12,27 +12,25 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0   # recomendado pelo Sonar para blame/PRs
+          fetch-depth: 0
 
-      - name: Set up JDK 17
+      - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: "17"
+          java-version: "21"
           cache: maven
 
       - name: Build + Sonar scan (Maven)
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}   # para decoração de PRs, se precisares
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN:  ${{ secrets.SONAR_TOKEN }}
         run: |
           mvn -B -DskipTests clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
             -Dsonar.projectKey=LEI-122720_todo-vaadin \
             -Dsonar.organization=LEI-122720
-            # -Dsonar.host.url=https://sonarcloud.io   <-- PODES APAGAR ESTA LINHA
 
       - name: Wait for Quality Gate
         uses: sonarsource/sonarqube-quality-gate-action@v1.1.0
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          
