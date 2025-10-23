@@ -1,5 +1,5 @@
 name: SonarQube Analysis
- 
+
 on:
   push:
     branches: [ "main" ]
@@ -32,5 +32,7 @@ jobs:
 
       - name: Wait for Quality Gate
         uses: sonarsource/sonarqube-quality-gate-action@v1.1.0
+        with:
+          scanMetadataReportFile: target/sonar/report-task.txt   # <- caminho correto para Maven
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
