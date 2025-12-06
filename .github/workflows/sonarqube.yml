@@ -1,0 +1,38 @@
+name: SonarQube Analysis
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-and-analyze:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+
+      - name: Build + Sonar scan (Maven)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN:  ${{ secrets.SONAR_TOKEN }}
+        run: |
+          mvn -B -DskipTests clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+            -Dsonar.projectKey=LEI-122720_todo-vaadin \
+            -Dsonar.organization=lei-122720
+
+      - name: Wait for Quality Gate
+        uses: sonarsource/sonarqube-quality-gate-action@v1.1.0
+        with:
+          scanMetadataReportFile: target/sonar/report-task.txt   # <- caminho correto para Maven
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

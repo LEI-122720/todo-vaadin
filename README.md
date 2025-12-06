@@ -1,3 +1,53 @@
+## 📽️ Vídeo explicativo "Engenharia de Software, Guião 2"
+https://www.youtube.com/watch?v=A3JbHH7K0tc
+
+## ⚙️ Integração Contínua (CI) com GitHub Actions
+
+Foi criada uma pipeline de *Continuous Integration* (CI) usando **GitHub Actions**, que automatiza o processo de build do projeto.
+
+### 🧩 Funcionalidade da pipeline
+- A pipeline é executada automaticamente sempre que é feito um **push** para a branch principal (`main`);
+- É configurado um ambiente com **Java 21 (Temurin)**;
+- É executado o comando `mvn clean package` para compilar o projeto e gerar o ficheiro `.jar`;
+- O ficheiro `.jar` é **publicado como artefacto** do workflow e também **copiado para a raiz do repositório**.
+
+### 🧱 Excerto do ficheiro `build.yml`
+
+```yaml
+name: Build JAR
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Build with Maven
+        run: mvn -B clean package
+
+      - name: Copiar JAR para raiz
+        run: cp target/*.jar .
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-jar
+          path: target/*.jar
+
+
 # App README
 
 - [ ] TODO Replace or update this README with instructions relevant to your application
@@ -79,6 +129,7 @@ docker build --secret id=proKey,src=$HOME/.vaadin/proKey .
 ```
 
 ## Getting Started
+
 
 The [Getting Started](https://vaadin.com/docs/latest/getting-started) guide will quickly familiarize you with your new
 App implementation. You'll learn how to set up your development environment, understand the project 
